@@ -56,6 +56,8 @@ class OAUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
 
+    department = models.ForeignKey('OADepartment', null=True, on_delete=models.SET_NULL, related_name='staff', related_query_name='staff', blank=True)
+
     objects = OAUserManager()
 
     EMAIL_FIELD = "email"
@@ -75,3 +77,9 @@ class OAUser(AbstractBaseUser, PermissionsMixin):
     def get_short_name(self):
         """Return the short name for the user."""
         return self.username
+
+class OADepartment(models.Model):
+    name = models.CharField(max_length=150)
+    intro = models.CharField(max_length=150)
+    leader = models.OneToOneField(OAUser, null=True, on_delete=models.SET_NULL, related_name='leader_department', related_query_name='leader_department')
+    manager = models.ForeignKey(OAUser, null=True, on_delete=models.SET_NULL, related_name='manager_department', related_query_name='manager_department')
