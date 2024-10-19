@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .serializers import  LoginSerializer
+from .serializers import LoginSerializer, UserSerializer
 from rest_framework import serializers
 from .authentications import generate_jwt
 
@@ -13,8 +13,7 @@ class LoginView(APIView):
         if serializer.is_valid():
             user = serializer.validated_data['user']
             token = generate_jwt(user)
-            print('===============', token)
-            return Response({'token': token})
+            return Response({'token': token, 'user': UserSerializer(user).data})
         else:
             raise serializers.ValidationError(serializer.errors)
 
