@@ -55,6 +55,7 @@ class OAUser(AbstractBaseUser, PermissionsMixin):
     status = models.IntegerField(choices=UserStatus, default=UserStatus.UNACTIVATED)
     is_active = models.BooleanField(default=True)
     date_joined = models.DateTimeField(auto_now_add=True)
+    last_login = models.DateTimeField(auto_now=True)
 
     department = models.ForeignKey('OADepartment', null=True, on_delete=models.SET_NULL, related_name='staff', related_query_name='staff', blank=True)
 
